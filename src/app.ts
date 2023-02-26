@@ -1,4 +1,7 @@
+// import { Request, Response, NextFunction } from 'express';
+
 const express = require('express');
+// const { Request, Response, NextFunction } = require('express');
 const cors = require('cors');
 const Web3 = require('web3');
 const dotenv = require('dotenv');
@@ -11,33 +14,41 @@ const { URL_INFURA, ADDRESS, PORT } = process.env;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/api/balance', (req?: any, res?: any, next) => {
-  const web3 = new Web3(URL_INFURA);
-  const getBalanceFromAddress = async () => {
-    const balance = await web3.eth.getBalance(ADDRESS);
-    await writeToFile(balance);
-  };
 
-  let timerId = setTimeout(function fetching() {
-    //more strict then setInterval
-    getBalanceFromAddress();
-    timerId = setTimeout(fetching, 1000);
-  }, 1000);
+const web3 = new Web3(URL_INFURA);
 
-  next();
-});
-app.get('/api/balance', (_?: any, res?: any) => {
-  res.status(200).json();
+// const getBalanceFromAddress = async () => {
+//   const balance = await web3.eth.getBalance(ADDRESS);
+//   await writeToFile(balance);
+// };
+
+// let timerId = setTimeout(async function fetching() {
+//   //more strict then setInterval
+//   await getBalanceFromAddress();
+//   timerId = setTimeout(fetching, 1000);
+// }, 1000);
+
+function delay(seconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, seconds * 1000);
+  });
+}
+
+// app.use('/api/balance', async (_?: Request, res?: Response, next: NextFunction) => {
+//   //how to next typing ???!!!
+//   await delay(3000);
+//   next();
+// });
+
+app.get('/api/balance', async (_?: any, res?: any) => {
+  const balance = await web3.eth.getBalance(ADDRESS);
+  await writeToFile(balance);
+  res.status(200).json({
+    balance,
+  });
 });
 app.use((_?: any, res?: any) => {
   res.status(404).json({ message: 'Not found' });
 });
 
 app.listen(PORT, () => console.log(`Server starting on port: ${PORT}`));
-
-// const testFN = require('./modules/test');
-// testFN('Andrii');
-// const text: string = 'Hello';
-// console.log(text);
-
-// const balance = contract.balanceOf(wallet_address); from community
