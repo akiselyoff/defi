@@ -3,9 +3,12 @@ const path = require('path');
 
 const logFilePath = path.join(__dirname, 'logFile.json');
 
-const add = async (balances: string[]) => {
-  await fs.writeFile(logFilePath, JSON.stringify(balances, null, 2));
-  return balances;
+const addToFile = async (balance: string) => {
+  const data = {
+    bal: balance,
+    date: new Date().toISOString(),
+  };
+  await fs.writeFile(logFilePath, JSON.stringify(data, null, 2));
 };
 
-module.exports = add;
+module.exports = addToFile;
