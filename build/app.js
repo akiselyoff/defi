@@ -1,15 +1,9 @@
-"use strict";
-// import { Request, Response, NextFunction } from 'express';
-var ghpages = require('gh-pages');
-ghpages.publish('build', function (err) {
-    console.log(err.message);
-});
-const express = require('express');
-// const { Request, Response, NextFunction } = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 const Web3 = require('web3');
-const dotenv = require('dotenv');
-const writeToFile = require('./modules/addToFile');
+import * as dotenv from 'dotenv';
+// const writeToFile = require('./modules/addToFile');
+import { addToFile } from './modules/addToFile.js';
 dotenv.config();
 const { URL_INFURA, ADDRESS, PORT } = process.env;
 const app = express();
@@ -30,14 +24,14 @@ function delay(seconds) {
         setTimeout(resolve, seconds * 1000);
     });
 }
-// app.use('/api/balance', async (_?: Request, res?: Response, next: NextFunction) => {
-//   //how to next typing ???!!!
-//   await delay(3000);
-//   next();
-// });
+app.use('/api/balance', async (_, res, next) => {
+    await delay(3000);
+    res.json({ message: 'Wait for delay 3sec' });
+    next();
+});
 app.get('/api/balance', async (_, res) => {
     const balance = await web3.eth.getBalance(ADDRESS);
-    await writeToFile(balance);
+    await addToFile(balance);
     res.status(200).json({
         balance,
     });
