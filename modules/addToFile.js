@@ -1,4 +1,3 @@
-"use strict";
 const fs = require('fs/promises');
 const path = require('path');
 const logFilePath = path.join(__dirname, 'logFile.json');
@@ -10,4 +9,5 @@ const addToFile = async (balance) => {
     await fs.writeFile(logFilePath, JSON.stringify(data, null, 2));
 };
 module.exports = addToFile;
+export {};
 //# sourceMappingURL=addToFile.js.map

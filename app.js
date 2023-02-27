@@ -1,4 +1,3 @@
-"use strict";
 // import { Request, Response, NextFunction } from 'express';
 var ghpages = require('gh-pages');
 ghpages.publish('build', function (err) {
@@ -25,11 +24,11 @@ const web3 = new Web3(URL_INFURA);
 //   await getBalanceFromAddress();
 //   timerId = setTimeout(fetching, 1000);
 // }, 1000);
-function delay(seconds) {
-    return new Promise(resolve => {
-        setTimeout(resolve, seconds * 1000);
-    });
-}
+// function delay(seconds: number) {
+//   return new Promise(resolve => {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// }
 // app.use('/api/balance', async (_?: Request, res?: Response, next: NextFunction) => {
 //   //how to next typing ???!!!
 //   await delay(3000);
@@ -46,4 +45,5 @@ app.use((_, res) => {
     res.status(404).json({ message: 'Not found' });
 });
 app.listen(PORT, () => console.log(`Server starting on port: ${PORT}`));
+export {};
 //# sourceMappingURL=app.js.map
